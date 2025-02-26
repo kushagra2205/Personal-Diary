@@ -1,97 +1,6 @@
+// To run using localstorage
+
 document.addEventListener("DOMContentLoaded", () => {
-    if (document.getElementById("entries-list")) {
-        loadEntries();
-    } else if (document.getElementById("entry-detail")) {
-        loadSingleEntry();
-    }
-});
-
-// ✅ Add a new entry (POST request)
-function addEntry() {
-    const title = document.getElementById("entry-title").value;
-    const content = document.getElementById("entry-content").value;
-
-    if (!title || !content) {
-        alert("Please fill in all fields.");
-        return;
-    }
-
-    const entry = { title, content };
-
-    fetch("http://localhost:8080/api/entries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(entry)
-    })
-    .then(response => response.json())
-    .then(() => {
-        location.href = "entries.html"; // Redirect to entries list
-    })
-    .catch(error => console.error("Error:", error));
-}
-
-// ✅ Load all entries (GET request)
-function loadEntries() {
-    const entriesContainer = document.getElementById("entries-list");
-    entriesContainer.innerHTML = "";
-
-    fetch("http://localhost:8080/api/entries")
-    .then(response => response.json())
-    .then(entries => {
-        if (entries.length === 0) {
-            entriesContainer.innerHTML = "<p>No journal entries yet.</p>";
-            return;
-        }
-
-        entries.forEach(entry => {
-            const entryDiv = document.createElement("div");
-            entryDiv.classList.add("entry");
-            
-            entryDiv.innerHTML = `
-                <a href="view-entry.html?id=${entry.id}" class="entry-link">
-                    <h3>${entry.title}</h3>    
-                    <p>${new Date(entry.createdAt).toLocaleDateString()}</p>
-                </a>
-            `;
-            entriesContainer.appendChild(entryDiv);
-        });
-    })
-    .catch(error => console.error("Error loading entries:", error));
-}
-
-// ✅ Load a single entry by ID (GET request)
-function loadSingleEntry() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const entryId = urlParams.get("id");
-
-    fetch(`http://localhost:8080/api/entries/${entryId}`)
-    .then(response => response.json())
-    .then(entry => {
-        document.getElementById("entry-detail").innerHTML = `
-            <h2>${entry.title}</h2>
-            <p><strong>Date:</strong> ${new Date(entry.createdAt).toLocaleDateString()}</p>
-            <p>${entry.content}</p>
-            <button onclick="deleteEntry(${entry.id})" class="delete_button">✖ Delete Entry</button>
-        `;
-    })
-    .catch(error => console.error("Error loading entry:", error));
-}
-
-// ✅ Delete an entry (DELETE request)
-function deleteEntry(entryId) {
-    fetch(`http://localhost:8080/api/entries/${entryId}`, {
-        method: "DELETE"
-    })
-    .then(() => {
-        location.href = "entries.html"; // Redirect after deletion
-    })
-    .catch(error => console.error("Error deleting entry:", error));
-}
-
-
-
-
-/*document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("entries-list")) {
         loadEntries();
     } else if (document.getElementById("entry-detail")) {
@@ -184,7 +93,107 @@ function deleteEntry(index) {
     location.href = "entries.html"; // Redirect to entries list
 }
 
-*/
+
+
+
+
+
+// To run with backend
+
+/*document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("entries-list")) {
+        loadEntries();
+    } else if (document.getElementById("entry-detail")) {
+        loadSingleEntry();
+    }
+});
+
+// ✅ Add a new entry (POST request)
+function addEntry() {
+    const title = document.getElementById("entry-title").value;
+    const content = document.getElementById("entry-content").value;
+
+    if (!title || !content) {
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    const entry = { title, content };
+
+    fetch("http://localhost:8080/api/entries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(entry)
+    })
+    .then(response => response.json())
+    .then(() => {
+        location.href = "entries.html"; // Redirect to entries list
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+// ✅ Load all entries (GET request)
+function loadEntries() {
+    const entriesContainer = document.getElementById("entries-list");
+    entriesContainer.innerHTML = "";
+
+    fetch("http://localhost:8080/api/entries")
+    .then(response => response.json())
+    .then(entries => {
+        if (entries.length === 0) {
+            entriesContainer.innerHTML = "<p>No journal entries yet.</p>";
+            return;
+        }
+
+        entries.forEach(entry => {
+            const entryDiv = document.createElement("div");
+            entryDiv.classList.add("entry");
+            
+            entryDiv.innerHTML = `
+                <a href="view-entry.html?id=${entry.id}" class="entry-link">
+                    <h3>${entry.title}</h3>    
+                    <p>${new Date(entry.createdAt).toLocaleDateString()}</p>
+                </a>
+            `;
+            entriesContainer.appendChild(entryDiv);
+        });
+    })
+    .catch(error => console.error("Error loading entries:", error));
+}
+
+// ✅ Load a single entry by ID (GET request)
+function loadSingleEntry() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const entryId = urlParams.get("id");
+
+    fetch(`http://localhost:8080/api/entries/${entryId}`)
+    .then(response => response.json())
+    .then(entry => {
+        document.getElementById("entry-detail").innerHTML = `
+            <h2>${entry.title}</h2>
+            <p><strong>Date:</strong> ${new Date(entry.createdAt).toLocaleDateString()}</p>
+            <p>${entry.content}</p>
+            <button onclick="deleteEntry(${entry.id})" class="delete_button">✖ Delete Entry</button>
+        `;
+    })
+    .catch(error => console.error("Error loading entry:", error));
+}
+
+// ✅ Delete an entry (DELETE request)
+function deleteEntry(entryId) {
+    fetch(`http://localhost:8080/api/entries/${entryId}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        location.href = "entries.html"; // Redirect after deletion
+    })
+    .catch(error => console.error("Error deleting entry:", error));
+}*/
+
+
+
+
+
 
 
 
